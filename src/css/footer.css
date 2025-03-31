@@ -1,0 +1,49 @@
+.footer {
+  padding: 40px 0px;
+  background-color: #1c1c1c;
+}
+.footer__logo-link {
+  display: block;
+  width: 276px;
+  height: 60px;
+  margin: 0 auto;
+  margin-bottom: 24px;
+}
+.footer__contacts {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.developer {
+  color: #ffffff;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.developer:last-child {
+  margin-bottom: 0;
+}
+.footer__contacts-social {
+  text-align: center;
+}
+.phone {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.phone svg {
+  display: none;
+  margin-right: 10px;
+}
+.phone span {
+  line-height: 1.2;
+  color: #ffffff;
+}
+.social-list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.copytight {
+  color: #ffffff;
+  line-height: 1.2;
+}

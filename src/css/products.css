@@ -1,0 +1,55 @@
+.products {
+  padding: 40px 0px 100px;
+}
+.products__title {
+  font-family: 'Inter';
+  font-weight: 900;
+  font-size: 32px;
+  line-height: 1.2;
+  margin-bottom: 40px;
+}
+.products__list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+/* .products__item {
+} */
+.products__card-link {
+  position: relative;
+  display: block;
+  margin-bottom: 16px;
+}
+.products__card-image {
+  border-radius: 16px;
+}
+.products__card-like {
+  position: absolute;
+  top: 12px;
+  right: 6px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+.products__card-info {
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.products__card-title,
+.products__card-price {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.2;
+}
+.products__card-button {
+  display: block;
+  width: 100%;
+  background-color: white;
+  border-radius: 32px;
+  padding: 12px 24px;
+  border: 1px solid #0044f0;
+  color: #0044f0;
+  line-height: 1.2;
+}
