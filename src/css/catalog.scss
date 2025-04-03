@@ -1,0 +1,43 @@
+.catalog {
+  padding-top: 28px;
+
+  @media (min-width: 768px) {
+    padding-top: 32px;
+  }
+  @media (min-width: 1024px) {
+    padding-top: 40px;
+  }
+
+  &__list {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow-x: auto;
+  }
+  &__list-item {
+    padding: 11px 14px 13px;
+    background-color: #eeeff2;
+    height: 38px;
+    border-radius: 32px;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+  }
+  &__list-item:hover {
+    border-color: #0044f0;
+  }
+  &__list-item:hover &__link {
+    color: #0044f0;
+  }
+  &__list-item.active {
+    background-color: #0044f0;
+  }
+  &__list-item.active &__link {
+    color: #ffffff;
+  }
+  &__link {
+    color: #969eae;
+    transition: color 0.3s ease;
+  }
+}

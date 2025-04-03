@@ -1,0 +1,139 @@
+.product {
+  padding: 24px 0px 60px;
+
+  @media (min-width: 768px) {
+    padding: 32px 0px 80px;
+  }
+  @media (min-width: 1024px) {
+    padding: 40px 0px 100px;
+  }
+  
+  &__title {
+    font-family: 'Inter';
+    font-weight: 900;
+    font-size: 24px;
+    margin-bottom: 24px;
+
+    @media (min-width: 768px) {
+      font-size: 32px;
+    }
+    @media (min-width: 1024px) {
+      margin-bottom: 40px;
+    }
+  }
+  &__description {
+
+    @media (min-width: 1024px) {
+      display: flex;
+      gap: 16px;
+    }
+  }
+  &__slider {
+    max-width: 832px;
+    margin-bottom: 32px;
+
+    @media (min-width: 768px) {
+      margin-bottom: 40px;
+    }
+    @media (min-width: 1024px) {
+      margin-bottom: 0;
+      min-width: 620px;
+    }
+  }
+  &__slider-image {
+
+    @media (min-width: 768px) {
+      margin-bottom: 16px;
+    }
+  }
+  &__slider-image img {
+    width: 100%;
+    border-radius: 16px;
+  }
+  &__slider-thumbnails {
+    display: none;
+
+    @media (min-width: 768px) {
+      display: flex;
+      gap: 16px;
+    }
+  }
+  &__slider-thumbnails img {
+    min-width: 167px;
+    border-radius: 16px;
+
+    @media (min-width: 1024px) {
+      min-width: 144px;
+    }
+    @media (min-width: 1440px) {
+      min-width: 196px;
+    }
+  }
+  &__info {
+    max-width: 832px;
+
+    @media (min-width: 1024px) {
+      min-width: 302px;
+    }
+    @media (min-width: 1440px) {
+      min-width: 408px;
+    }
+  }
+  &__info-price {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+  &__info-id {
+    display: inline-block;
+    padding: 4px 8px;
+    background-color: #eeeff2;
+    border-radius: 32px;
+    margin-bottom: 24px;
+  }
+  &__table {
+    width: 100%;
+    margin-bottom: 24px;
+  }
+  &__table td {
+    padding: 0;
+    border-bottom: 1px solid #eeeff2;
+  }
+  &__table tr {
+    height: 23px;
+  }
+  &__table-name {
+    color: #969eae;
+  }
+  &__table-value {
+    text-align: right;
+  }
+  &__button-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  &__tocart-button {
+    width: 100%;
+    border: none;
+    background-color: #0044f0;
+    padding: 12px 24px;
+    color: #ffffff;
+    border-radius: 32px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  &__tocart-button:hover {
+    background-color: #0945DE;
+  }
+  &__like-button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0;
+  }
+}
+.char-title {
+  font-size: 16px;
+  margin-bottom: 12px;
+  font-weight: 400;
+}

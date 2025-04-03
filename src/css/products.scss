@@ -1,0 +1,151 @@
+.products {
+  padding: 24px 0px 24px;
+  
+  @media (min-width: 768px) {
+    padding: 32px 0px 80px;
+  }
+  @media (min-width: 1024px) {
+    padding: 40px 0px 100px;
+  }
+  
+  &__title {
+    font-family: 'Inter';
+    font-weight: 900;
+    font-size: 24px;
+    margin-bottom: 24px;
+
+    @media (min-width: 768px) {
+      font-size: 32px;
+      margin-bottom: 32px;
+    }
+    @media (min-width: 1024px) {
+      margin-bottom: 40px;
+    }
+  }
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px 8px;
+    margin-bottom: 40px;
+
+    @media (min-width: 620px) {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px 10px;
+    }
+    @media (min-width: 980px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    @media (min-width: 1024px) {
+      gap: 40px 16px;
+      margin-bottom: 60px;
+    }
+  }
+  &__card-link {
+    position: relative;
+    display: block;
+    margin-bottom: 12px;
+
+    @media (min-width: 768px) {
+      margin-bottom: 16px;
+    }
+  }
+  &__card-image {
+    border-radius: 16px;
+  }
+  &__card-like {
+    position: absolute;
+    top: 12px;
+    right: 6px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    fill: #ffffff;
+    stroke: #1c1c1c;
+
+    @media (min-width: 768px) {
+      top: 14px;
+      right: 13px;
+    }
+  }
+  &__card-like.active svg {
+    fill: #0044f0;
+    stroke: #0044f0;
+  }
+  &__card-info {
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+
+    @media (min-width: 768px) {
+      margin-bottom: 39px;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    @media (min-width: 1024px) {
+      margin-bottom: 20px;
+    }
+  }
+  &__card-title {
+    font-size: 12px;
+    font-weight: 400;
+    margin-bottom: 18px;
+
+    @media (min-width: 768px) {
+      font-size: 16px;
+      margin-bottom: 0;
+    }
+  }
+  &__card-price {
+    font-size: 16px;
+
+    @media (min-width: 768px) {
+      font-size: 20px;
+    }
+  }
+  &__card-button {
+    display: block;
+    width: 100%;
+    background-color: white;
+    border-radius: 32px;
+    padding: 12px 24px;
+    border: 1px solid #0044f0;
+    color: #0044f0;
+    transition: background-color, color 0.3s ease;
+  }
+  &__card-button:hover {
+    background-color: #0044f0;
+    color: #ffffff;
+  }
+}
+
+.pagination {
+  width: 200px;
+  margin: 0 auto;
+
+  &__bar {
+    height: 6px;
+    border-radius: 32px;
+    background-color: #eeeff2;
+    position: relative;
+    margin-bottom: 16px;
+  }
+  &__marker {
+    position: absolute;
+    border-radius: 32px;
+    width: 68px;
+    height: 6px;
+    left: 0;
+    background-color: #0044f0;
+  }
+  &__pages {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  &__arrow {
+    cursor: pointer;
+  }
+}
