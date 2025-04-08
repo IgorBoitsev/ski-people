@@ -1,17 +1,21 @@
-const renderLayout = (elementTag, elementClassname, containerClassnames = ['container'], innerHtml, parrentSelector) => {
+const renderLayout = (elementTag, elementClassname, containerClassnames = ['container'], innerElement, parrentSelector = 'main') => {
 
-  const elementWrapper = document.createElement(elementTag);
-  elementWrapper.classList.add(elementClassname);
+  if (document.querySelector(`.${elementClassname}`)) {
+    return;
+  } else {
+    const elementWrapper = document.createElement(elementTag);
+    elementWrapper.classList.add(elementClassname);
+  
+    const containerDiv = document.createElement('div');
+    containerDiv.classList.add(...containerClassnames);
+  
+    containerDiv.append(innerElement);
+  
+    elementWrapper.append(containerDiv);
+    document.querySelector(parrentSelector).append(elementWrapper);
+  }
 
-  const containerDiv = document.createElement('div');
-  containerDiv.classList.add(...containerClassnames);
-
-  containerDiv.innerHTML = innerHtml;
-
-  elementWrapper.append(containerDiv);
-  document.querySelector(parrentSelector).append(elementWrapper);
-
-  return elementWrapper;
+  // console.log(`${elementTag} was created`);
 
 }
 
