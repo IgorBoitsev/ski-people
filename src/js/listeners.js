@@ -1,5 +1,6 @@
 import { createProductsHtmlComponent } from "../components/innerHtmlComponents.js";
-import { getData } from "./api.js";
+import { getProductsByCategory } from "./api.js";
+import { getFromLocalStorage, saveToLocalStorage } from "./localStorage.js";
 
 const changeCategory = async (targetWrapperClassname, targetClassname, changedWrapperClassname) => {
 
@@ -18,22 +19,47 @@ const changeCategory = async (targetWrapperClassname, targetClassname, changedWr
       });
 
       event.target.parentNode.classList.add('active');
-      activeCategory = event.target.textContent;
+
+      event.target.textContent.toLowerCase() === 'все' ?
+        activeCategory = '' :
+        activeCategory = event.target.textContent;
     };
 
-    const data = await getData();
-    let filteredData = '';
+    const filteredData = await getProductsByCategory(activeCategory);
 
-    if (activeCategory === 'Все') {
-      filteredData = data.filter(item => item.category);
-    } else {
-      filteredData = data.filter(item => item.category === activeCategory);
-    }
-    
     changedWrapperContainer.textContent = '';
     changedWrapperContainer.append(createProductsHtmlComponent(filteredData, activeCategory));
   });
   
 }
 
-export { changeCategory }
+const addToFavourite = (targetWrapperClassname, targetClassname) => {
+
+  const favouriteList = getFromLocalStorage('ski-people-favourite');
+  console.log('favouriteList: ', favouriteList);
+  const elementContainer = document.querySelector(`.${targetWrapperClassname}`);
+  
+  if (elementContainer) {
+    elementContainer.addEventListener('click', (event) => {
+      if (event.target.closest(`.${targetClassname}`)) {
+
+        if (event.target.closest(`.${targetClassname}`).classList.contains('active')) {
+          event.target.closest(`.${targetClassname}`).classList.remove('active');
+          const productId = Number(event.target.parentNode.parentNode.dataset.id);
+          const deleteItemIndex = favouriteList.findIndex(id => id === productId);
+          favouriteList.splice(deleteItemIndex, 1);
+          saveToLocalStorage('ski-people-favourite', favouriteList);
+        } else {
+          event.target.closest(`.${targetClassname}`).classList.add('active');
+          const productId = Number(event.target.parentNode.parentNode.dataset.id);
+          favouriteList.push(productId);
+          saveToLocalStorage('ski-people-favourite', favouriteList);
+        }
+
+      }
+    })
+  }
+
+}
+
+export { changeCategory, addToFavourite }

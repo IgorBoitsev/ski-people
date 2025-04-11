@@ -1,3 +1,6 @@
+import { API_URL } from "../js/const.js";
+import { getFromLocalStorage } from "../js/localStorage.js";
+
 const createHeaderHtmlComponent = () => {
 
   const headerHtmlComponent = document.createElement('div');
@@ -48,7 +51,7 @@ const createFooterHtmlComponent = () => {
   const footerHtmlComponent = document.createElement('div');
   footerHtmlComponent.innerHTML = `
     <a href="/" class="footer__logo-link">
-      <svg width="" height="" viewBox="0 0 164 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 164 35" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M158.688 26.3345C157.466 26.3345 156.409 26.0525 155.516 25.4883C154.624 24.9185 153.933 24.1315 153.444 23.1273C152.961 22.1175 152.719 20.9553 152.719 19.6409C152.719 18.332 152.961 17.1699 153.444 16.1544C153.933 15.1333 154.607 14.335 155.465 13.7596C156.329 13.1785 157.327 12.888 158.458 12.888C159.168 12.888 159.853 13.0177 160.513 13.2772C161.172 13.5311 161.764 13.9232 162.287 14.4535C162.815 14.9782 163.233 15.641 163.54 16.4421C163.847 17.2376 164 18.1797 164 19.2685V20.0132H153.768V18.6846H162.449C162.449 17.8497 162.278 17.0994 161.937 16.4337C161.602 15.7623 161.133 15.232 160.53 14.8428C159.933 14.4535 159.242 14.2589 158.458 14.2589C157.628 14.2589 156.897 14.4789 156.266 14.9189C155.635 15.359 155.141 15.94 154.783 16.6621C154.43 17.3843 154.251 18.1741 154.246 19.0316V19.827C154.246 20.8594 154.425 21.7621 154.783 22.535C155.147 23.3022 155.661 23.8974 156.326 24.3205C156.991 24.7436 157.779 24.9552 158.688 24.9552C159.308 24.9552 159.851 24.8593 160.317 24.6675C160.789 24.4757 161.184 24.219 161.502 23.8974C161.826 23.5702 162.071 23.212 162.235 22.8227L163.676 23.2881C163.477 23.8353 163.151 24.3403 162.696 24.8029C162.247 25.2655 161.684 25.6378 161.007 25.9199C160.337 26.1963 159.564 26.3345 158.688 26.3345Z" fill="#0044F0"/>
         <path d="M149.377 8.73309V26.0638H147.859V8.73309H149.377Z" fill="#0044F0"/>
         <path d="M133.461 30.938V13.0657H134.937V15.5451H135.116C135.298 15.1559 135.548 14.7581 135.866 14.3519C136.184 13.9401 136.605 13.5932 137.128 13.3111C137.657 13.029 138.322 12.888 139.123 12.888C140.203 12.888 141.147 13.17 141.954 13.7342C142.767 14.2927 143.398 15.0769 143.847 16.0867C144.302 17.0909 144.529 18.2615 144.529 19.5986C144.529 20.9412 144.302 22.1175 143.847 23.1273C143.398 24.1372 142.767 24.9242 141.954 25.4883C141.147 26.0525 140.209 26.3345 139.14 26.3345C138.35 26.3345 137.688 26.1935 137.154 25.9114C136.625 25.6293 136.196 25.2824 135.866 24.8706C135.542 24.4531 135.292 24.0469 135.116 23.652H134.979V30.938H133.461ZM134.962 19.5732C134.962 20.6225 135.119 21.5533 135.431 22.3657C135.75 23.1725 136.204 23.8071 136.795 24.2697C137.392 24.7267 138.114 24.9552 138.961 24.9552C139.831 24.9552 140.564 24.7182 141.161 24.2444C141.764 23.7648 142.222 23.1189 142.534 22.3065C142.852 21.4941 143.012 20.583 143.012 19.5732C143.012 18.5746 142.855 17.6748 142.543 16.8737C142.236 16.0726 141.781 15.4379 141.178 14.9697C140.576 14.4958 139.837 14.2589 138.961 14.2589C138.109 14.2589 137.384 14.4873 136.787 14.9443C136.19 15.3956 135.735 16.0218 135.423 16.8229C135.116 17.6184 134.962 18.5351 134.962 19.5732Z" fill="#0044F0"/>
@@ -155,26 +158,38 @@ const breadcrumbsHtmlComponent = `
   </nav>
 `;
 
-const createProductsHtmlComponent = (productsData, activeProductCategory = '') => {
+const createProductsHtmlComponent = (productsData) => {
 
   const div = document.createElement('div');
 
-  const h2 = document.createElement('h2');
-  h2.classList.add('products__title', 'visually-hidden');
-  h2.textContent = activeProductCategory;
+  // const h2 = document.createElement('h2');
+  // h2.classList.add('products__title', 'visually-hidden');
+  // h2.textContent = activeProductCategory;
 
   const productsList = document.createElement('ul');
   productsList.classList.add('products__list');
 
+  // Получение списка ID всех товаров в Избранном
+  const favouriteIdList = getFromLocalStorage('ski-people-favourite');
+
+  // let isInFavourite =  false;
+
+  // Наполненение карточки товара с учетом нахождения его в Избранном
   productsData.forEach(product => {
     const li = document.createElement('li');
     li.classList.add('products__item');
 
+    // if(favouriteIdList.find(id => id == product.id)) {
+    //   isInFavourite = true;
+    // } else {
+    //   isInFavourite = false;
+    // };
+    
     li.innerHTML = `
       <article class="products__card">
         <a href="#" class="products__card-link">
-          <img class="products__card-image" src="/img/snow-ekip-01.jpg" alt="${product.category - product.title}">
-          <button class="products__card-like">
+          <img class="products__card-image" src="${API_URL}/${product.img}" alt="${product.category - product.title}">
+          <button class="products__card-like ${favouriteIdList.find(id => id == product.id) ? 'active' : ''}" data-id="${product.id}">
             <svg width="16" height="14" viewBox="0 0 16 14" fill="" xmlns="http://www.w3.org/2000/svg">
               <path d="M8.41301 12.8733C8.18634 12.9533 7.81301 12.9533 7.58634 12.8733C5.65301 12.2133 1.33301 9.45998 1.33301 4.79332C1.33301 2.73332 2.99301 1.06665 5.03967 1.06665C6.25301 1.06665 7.32634 1.65332 7.99967 2.55998C8.67301 1.65332 9.75301 1.06665 10.9597 1.06665C13.0063 1.06665 14.6663 2.73332 14.6663 4.79332C14.6663 9.45998 10.3463 12.2133 8.41301 12.8733Z" fill="" stroke="" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>                      
@@ -191,7 +206,7 @@ const createProductsHtmlComponent = (productsData, activeProductCategory = '') =
     `;
 
     productsList.append(li);
-    div.append(h2);
+    // div.append(h2);
     div.append(productsList);
   });
 

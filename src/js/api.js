@@ -1,12 +1,41 @@
 import { API_URL } from './const.js';
+import { getFromLocalStorage } from './localStorage.js';
 
-const getData = async () => {
+const getProducts = async () => {
+  try {
+    const response = await fetch(`${API_URL}/categories/`);
+    const products = await response.json();
 
-  const response = await fetch(API_URL);
-  const obj = await response.json();
-
-  return obj;
-
+    return products;
+  } catch (error) {
+    console.log(`Error: ${error}`);
+  }
 }
 
-export { getData }
+const getProductsByCategory = async (category) => {
+  try {
+    const response = await fetch(`${API_URL}/categories/${category}`);
+    const products = await response.json();
+  
+    return products;
+  } catch (error) {
+    console.log(`Error: ${error}`);
+  }
+}
+
+const getFavouriteProducts = async () => {
+  const favouriteProductsId = getFromLocalStorage('ski-people-favourite');
+  const products = await getProducts();
+
+  const favouriteProducts = [];
+
+  products.forEach(p => {
+    if (favouriteProductsId.find(id => id == p.id)) {
+      favouriteProducts.push(p);
+    }
+  });
+
+  return favouriteProducts;
+}
+
+export { getProducts, getProductsByCategory, getFavouriteProducts }

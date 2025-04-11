@@ -83,10 +83,10 @@
   &__menu-cart {
     display: flex;
     align-items: center;
+    gap: 4px;
   }
   &__menu-cart {
     flex-direction: row-reverse;
-    gap: 4px;
 
     @media (min-width: 768px) {
       flex-direction: row;
