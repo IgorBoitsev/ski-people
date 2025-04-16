@@ -13,7 +13,7 @@
     align-items: center;
     gap: 8px;
   }
-  &__item::after {
+  &__item:not(:last-child)::after {
     content: '>';
     color: #969eae;
     margin-left: 8px;

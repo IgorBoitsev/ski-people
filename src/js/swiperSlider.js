@@ -4,7 +4,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 const swiperSliderInit = () => {
-
+  
   const swiper = new Swiper(".mySwiper", {
     loop: true,
     spaceBetween: 14,

@@ -2,11 +2,21 @@ import { API_URL } from './const.js';
 import { getFromLocalStorage } from './localStorage.js';
 
 const getProducts = async () => {
-  try {
-    const response = await fetch(`${API_URL}/categories/`);
-    const products = await response.json();
+    try {
+      const response = await fetch(`${API_URL}/categories/`);
+      const products = await response.json();
+      return products;
+    } catch (error) {
+      console.log(`Error: ${error}`);
+    }
+}
 
-    return products;
+const getSingleProduct = async (productId) => {
+  try {
+    const response = await fetch(`${API_URL}/products/${productId}`);
+    const product = await response.json();
+  
+    return product;
   } catch (error) {
     console.log(`Error: ${error}`);
   }
@@ -38,4 +48,4 @@ const getFavouriteProducts = async () => {
   return favouriteProducts;
 }
 
-export { getProducts, getProductsByCategory, getFavouriteProducts }
+export { getProducts, getSingleProduct, getProductsByCategory, getFavouriteProducts }

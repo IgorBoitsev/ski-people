@@ -15,7 +15,7 @@ const renderLayout = (elementTag, elementClassname, containerClassnames = ['cont
     document.querySelector(parrentSelector).append(elementWrapper);
   }
 
-  // console.log(`${elementTag} was created`);
+  // console.log(`${elementTag} .${elementClassname} was created`);
 
 }
 

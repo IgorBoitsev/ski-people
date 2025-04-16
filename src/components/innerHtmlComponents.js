@@ -10,7 +10,7 @@ const createHeaderHtmlComponent = () => {
         <img src="/img/logo.svg" alt="Логотип сервиса Ski People" class="header__logo-image">
       </a>
   
-      <form action="#" class="header__search">
+      <form action="" class="header__search">
         <input type="search" name="search" class="header__search-input" placeholder="Введите запрос">
         <button type="submit" class="header__search-button">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -142,29 +142,77 @@ const createCatalogHtmlComponent = (productsData) => {
 
 }
 
-const breadcrumbsHtmlComponent = `
-  <nav class="breadcrumbs__navigation">
-    <ul class="breadcrumbs__list">
-      <li class="breadcrumbs__item">
-        <a href="#" class="breadcrumbs__item-link">Главная</a>
-      </li>
-      <li class="breadcrumbs__item">
-        <a href="#" class="breadcrumbs__item-link">Лыжи</a>
-      </li>
-      <li class="breadcrumbs__item">
-        <a href="#" class="breadcrumbs__item-link">Горные лыжи</a>
-      </li>
-    </ul>
-  </nav>
-`;
+const createBreadcrumbsHtmlComponent = (productData) => {
+  const firstBreadcrumb = window.location.pathname;
 
-const createProductsHtmlComponent = (productsData) => {
+  const breadcrumbsNav = document.createElement('nav');
+  breadcrumbsNav.classList.add('breadcrumbs__navigation');
+  const breadcrumbsList = document.createElement('ul');
+  breadcrumbsList.classList.add('breadcrumbs__list');
 
+  if (productData) {
+    breadcrumbsList.innerHTML = `
+      <li class="breadcrumbs__item">
+        ${firstBreadcrumb === '/' ?
+        '<a href="/" class="breadcrumbs__item-link">Главная</a>' :
+        '<a href="/favourite" class="breadcrumbs__item-link">Избранное</a>'}
+      </li>
+      <li class="breadcrumbs__item">
+        <a href="#" class="breadcrumbs__item-link">${productData.category}</a>
+      </li>
+      <li class="breadcrumbs__item">
+        <a href="#" class="breadcrumbs__item-link">${productData.title}</a>
+      </li>
+    `;
+  } else {
+    breadcrumbsList.innerHTML = `
+      <li class="breadcrumbs__item">
+        ${firstBreadcrumb === '/' ?
+        '<a href="/" class="breadcrumbs__item-link">Главная</a>' :
+        '<a href="/favourite" class="breadcrumbs__item-link">Избранное</a>'}
+      </li>
+    `;
+  }
+
+  breadcrumbsNav.append(breadcrumbsList)
+
+  return breadcrumbsNav;
+
+}
+
+const createProductsHtmlComponent = (productsData, elementsPerPage = 12) => {
+
+  // Обертка для всех карточек с товарами
   const div = document.createElement('div');
 
-  // const h2 = document.createElement('h2');
-  // h2.classList.add('products__title', 'visually-hidden');
-  // h2.textContent = activeProductCategory;
+  // Спрятанный заголовок
+  //// const h2 = document.createElement('h2');
+  //// h2.classList.add('products__title', 'visually-hidden');
+  //// h2.textContent = activeProductCategory;
+
+  // ! Пагинация
+  // ! Вынести в отдельный модуль
+  const paginationDiv = document.createElement('div');
+  paginationDiv.classList.add('pagination');
+  paginationDiv.innerHTML = `
+    <div class="pagination__bar">
+      <div class="pagination__marker" style=""></div>
+    </div>
+
+    <div class="pagination__pages">
+      <span class="pagination__arrow prev">
+        <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1.86395 6.99999L7.52528 1.18199C7.5719 1.13511 7.60874 1.07944 7.6337 1.01822C7.65866 0.957002 7.67122 0.891439 7.67068 0.825329C7.67013 0.759219 7.65647 0.693875 7.6305 0.633076C7.60453 0.572278 7.56676 0.517234 7.51938 0.471129C7.472 0.425024 7.41594 0.388774 7.35445 0.364476C7.29297 0.340178 7.22727 0.328315 7.16117 0.329574C7.09507 0.330832 7.02988 0.345187 6.96936 0.371808C6.90885 0.398428 6.85421 0.436786 6.80862 0.484661L0.808619 6.65133C0.717804 6.74467 0.666992 6.86976 0.666992 6.99999C0.666992 7.13023 0.717804 7.25532 0.808619 7.34866L6.80862 13.5153C6.85421 13.5632 6.90885 13.6016 6.96936 13.6282C7.02988 13.6548 7.09507 13.6692 7.16117 13.6704C7.22727 13.6717 7.29297 13.6598 7.35445 13.6355C7.41594 13.6112 7.472 13.575 7.51938 13.5289C7.56676 13.4828 7.60453 13.4277 7.6305 13.3669C7.65647 13.3061 7.67013 13.2408 7.67068 13.1747C7.67122 13.1086 7.65866 13.043 7.6337 12.9818C7.60874 12.9205 7.5719 12.8649 7.52528 12.818L1.86395 6.99999Z" fill="#1C1C1C"/>
+        </svg>
+      </span>
+      <span class="pagination__count">${elementsPerPage} из ${productsData.length}</span>
+      <span class="pagination__arrow next">
+        <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6.13605 6.99999L0.474715 1.18199C0.428104 1.13511 0.391255 1.07944 0.366299 1.01822C0.341343 0.957002 0.328775 0.891439 0.329325 0.825329C0.329874 0.759219 0.343529 0.693875 0.369498 0.633076C0.395468 0.572278 0.433237 0.517234 0.48062 0.471129C0.528004 0.425024 0.58406 0.388774 0.645545 0.364476C0.70703 0.340178 0.772725 0.328315 0.838826 0.329574C0.904926 0.330832 0.97012 0.345187 1.03064 0.371808C1.09115 0.398428 1.14579 0.436786 1.19138 0.484661L7.19138 6.65133C7.2822 6.74467 7.33301 6.86976 7.33301 6.99999C7.33301 7.13023 7.2822 7.25532 7.19138 7.34866L1.19138 13.5153C1.14579 13.5632 1.09115 13.6016 1.03064 13.6282C0.97012 13.6548 0.904926 13.6692 0.838826 13.6704C0.772725 13.6717 0.70703 13.6598 0.645545 13.6355C0.58406 13.6112 0.528004 13.575 0.48062 13.5289C0.433237 13.4828 0.395468 13.4277 0.369498 13.3669C0.343529 13.3061 0.329874 13.2408 0.329325 13.1747C0.328775 13.1086 0.341343 13.043 0.366299 12.9818C0.391255 12.9205 0.428104 12.8649 0.474715 12.818L6.13605 6.99999Z" fill="#1C1C1C"/>
+        </svg>
+      </span>
+    </div>
+  `;
 
   const productsList = document.createElement('ul');
   productsList.classList.add('products__list');
@@ -172,22 +220,14 @@ const createProductsHtmlComponent = (productsData) => {
   // Получение списка ID всех товаров в Избранном
   const favouriteIdList = getFromLocalStorage('ski-people-favourite');
 
-  // let isInFavourite =  false;
-
   // Наполненение карточки товара с учетом нахождения его в Избранном
   productsData.forEach(product => {
     const li = document.createElement('li');
     li.classList.add('products__item');
-
-    // if(favouriteIdList.find(id => id == product.id)) {
-    //   isInFavourite = true;
-    // } else {
-    //   isInFavourite = false;
-    // };
     
     li.innerHTML = `
       <article class="products__card">
-        <a href="#" class="products__card-link">
+        <a href="/products/${product.id}" class="products__card-link">
           <img class="products__card-image" src="${API_URL}/${product.img}" alt="${product.category - product.title}">
           <button class="products__card-like ${favouriteIdList.find(id => id == product.id) ? 'active' : ''}" data-id="${product.id}">
             <svg width="16" height="14" viewBox="0 0 16 14" fill="" xmlns="http://www.w3.org/2000/svg">
@@ -206,9 +246,11 @@ const createProductsHtmlComponent = (productsData) => {
     `;
 
     productsList.append(li);
-    // div.append(h2);
-    div.append(productsList);
   });
+
+  //// div.append(h2);
+  div.append(productsList);
+  div.append(paginationDiv);
 
   return div;
 
@@ -304,26 +346,42 @@ const cartHtmlComponent = `
   </form>
 `;
 
-const productHtmlComponent = `
-  <h2 class="product__title">Горные лыжи</h2>
+const createSingleProductHtmlComponent = (productData) => {
 
-  <div class="product__description">
+  const div = document.createElement('div');
+
+  const h2 = document.createElement('h2');
+  h2.classList.add('product__title');
+  h2.textContent = productData.title;
+
+  const productDescription = document.createElement('div');
+  productDescription.classList.add('product__description');
+
+  const favouriteIdList = getFromLocalStorage('ski-people-favourite');
+
+  let productSliderSlides = '';
+  let productSliderThumbnails = '';
+
+  productData.thumbnails.forEach(thumbImg => {
+    productSliderSlides += `
+      <div class="product__slider-slide swiper-slide">
+        <img src="${API_URL}/${thumbImg}">
+      </div>
+    `;
+
+    productSliderThumbnails += `
+      <div class="product__slider-thumbnail swiper-slide">
+        <img src="${API_URL}/${thumbImg}">
+      </div>
+    `;
+  });
+
+  const productHtmlComponent = `
     <div class="product__slider">
 
       <div class="swiper mySwiper2">
         <div class="product__slider-slides swiper-wrapper">
-          <div class="product__slider-slide swiper-slide">
-            <img src="/img/snow-ekip-01.jpg">
-          </div>
-          <div class="product__slider-slide swiper-slide">
-            <img src="/img/snow-ekip-01.jpg">
-          </div>
-          <div class="product__slider-slide swiper-slide">
-            <img src="/img/snow-ekip-01.jpg">
-          </div>
-          <div class="product__slider-slide swiper-slide">
-            <img src="/img/snow-ekip-01.jpg">
-          </div>
+          ${productSliderSlides}
         </div>
 
         <div class="poruct__slider-arrow_next swiper-button-next">
@@ -342,53 +400,42 @@ const productHtmlComponent = `
 
       <div thumbsSlider="" class="swiper mySwiper">
         <div class="product__slider-thumbnails swiper-wrapper">
-          <div class="product__slider-thumbnail swiper-slide">
-            <img src="/img/snow-ekip-01.jpg">
-          </div>
-          <div class="product__slider-thumbnail swiper-slide">
-            <img src="/img/snow-ekip-01.jpg">
-          </div>
-          <div class="product__slider-thumbnail swiper-slide">
-            <img src="/img/snow-ekip-01.jpg">
-          </div>
-          <div class="product__slider-thumbnail swiper-slide">
-            <img src="/img/snow-ekip-01.jpg">
-          </div>
+          ${productSliderThumbnails}
         </div>
       </div>
 
     </div>
 
     <div class="product__info">
-      <p class="product__info-price">5&nbsp;000&nbsp;₽</p>
-      <p class="product__info-id">арт.&nbsp;84348945757</p>
+      <p class="product__info-price">${productData.price}&nbsp;₽</p>
+      <p class="product__info-id">арт.&nbsp;${productData.id}</p>
       <div class="product__info-char">
         <h3 class="char-title">Общие характеристики</h3>
         <table class="product__table">
           <tbody>
             <tr>
               <td class="product__table-name">Коллекция</td>
-              <td class="product__table-value">Snow</td>
+              <td class="product__table-value">${productData.collection}</td>
             </tr>
             <tr>
               <td class="product__table-name">Производитель</td>
-              <td class="product__table-value">Россия</td>
+              <td class="product__table-value">${productData.manufacturer}</td>
             </tr>
             <tr>
               <td class="product__table-name">Гарантия</td>
-              <td class="product__table-value">18 мес.</td>
+              <td class="product__table-value">${productData.warranty}</td>
             </tr>
             <tr>
               <td class="product__table-name">Срок службы</td>
-              <td class="product__table-value">5 лет</td>
+              <td class="product__table-value">${productData.life}</td>
             </tr>
             <tr>
               <td class="product__table-name">Цвет</td>
-              <td class="product__table-value">Синий</td>
+              <td class="product__table-value">${productData.color}</td>
             </tr>
             <tr>
               <td class="product__table-name">Макс. нагрузка</td>
-              <td class="product__table-value">130 кг</td>
+              <td class="product__table-value">${productData.max_weight}</td>
             </tr>
           </tbody>
         </table>
@@ -396,15 +443,21 @@ const productHtmlComponent = `
 
       <div class="product__button-wrapper">
         <button class="product__tocart-button">В корзину</button>
-        <button class="product__like-button">
-          <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8.41331 12.8733C8.18665 12.9533 7.81331 12.9533 7.58665 12.8733C5.65331 12.2133 1.33331 9.45998 1.33331 4.79332C1.33331 2.73332 2.99331 1.06665 5.03998 1.06665C6.25331 1.06665 7.32665 1.65332 7.99998 2.55998C8.67331 1.65332 9.75331 1.06665 10.96 1.06665C13.0066 1.06665 14.6666 2.73332 14.6666 4.79332C14.6666 9.45998 10.3466 12.2133 8.41331 12.8733Z" fill="white" stroke="#1C1C1C" stroke-linecap="round" stroke-linejoin="round"/>
+        <button class="product__like-button ${favouriteIdList.find(id => id === productData.id) ? 'active' : ''}" data-id="${productData.id}">
+          <svg width="16" height="14" viewBox="0 0 16 14" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8.41331 12.8733C8.18665 12.9533 7.81331 12.9533 7.58665 12.8733C5.65331 12.2133 1.33331 9.45998 1.33331 4.79332C1.33331 2.73332 2.99331 1.06665 5.03998 1.06665C6.25331 1.06665 7.32665 1.65332 7.99998 2.55998C8.67331 1.65332 9.75331 1.06665 10.96 1.06665C13.0066 1.06665 14.6666 2.73332 14.6666 4.79332C14.6666 9.45998 10.3466 12.2133 8.41331 12.8733Z" fill="" stroke="" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>                    
         </button>
       </div>
     </div>
-  </div>
 `;
+
+  productDescription.innerHTML = productHtmlComponent;
+  div.append(h2, productDescription);
+
+  return div;
+
+}
 
 const orderHtmlComponent = `
   <div class="order__layout">
@@ -450,9 +503,9 @@ export {
   createHeaderHtmlComponent,
   createFooterHtmlComponent,
   createCatalogHtmlComponent,
-  breadcrumbsHtmlComponent,
+  createBreadcrumbsHtmlComponent,
   createProductsHtmlComponent,
-  productHtmlComponent,
+  createSingleProductHtmlComponent,
   cartHtmlComponent,
   orderHtmlComponent
 }

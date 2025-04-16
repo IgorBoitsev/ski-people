@@ -151,6 +151,13 @@
     cursor: pointer;
     padding: 0;
   }
+  &__like-button svg {
+    fill: white;
+    stroke: #0044f0;
+  }
+  &__like-button.active svg {
+    fill: #0044f0;
+  }
 }
 .char-title {
   font-size: 16px;

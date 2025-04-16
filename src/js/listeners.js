@@ -1,6 +1,7 @@
 import { createProductsHtmlComponent } from "../components/innerHtmlComponents.js";
-import { getProductsByCategory } from "./api.js";
+import { getProducts, getProductsByCategory } from "./api.js";
 import { getFromLocalStorage, saveToLocalStorage } from "./localStorage.js";
+import { router } from "./router.js";
 
 const changeCategory = async (targetWrapperClassname, targetClassname, changedWrapperClassname) => {
 
@@ -28,7 +29,7 @@ const changeCategory = async (targetWrapperClassname, targetClassname, changedWr
     const filteredData = await getProductsByCategory(activeCategory);
 
     changedWrapperContainer.textContent = '';
-    changedWrapperContainer.append(createProductsHtmlComponent(filteredData, activeCategory));
+    changedWrapperContainer.append(createProductsHtmlComponent(filteredData));
   });
   
 }
@@ -36,7 +37,6 @@ const changeCategory = async (targetWrapperClassname, targetClassname, changedWr
 const addToFavourite = (targetWrapperClassname, targetClassname) => {
 
   const favouriteList = getFromLocalStorage('ski-people-favourite');
-  console.log('favouriteList: ', favouriteList);
   const elementContainer = document.querySelector(`.${targetWrapperClassname}`);
   
   if (elementContainer) {
@@ -46,14 +46,20 @@ const addToFavourite = (targetWrapperClassname, targetClassname) => {
         if (event.target.closest(`.${targetClassname}`).classList.contains('active')) {
           event.target.closest(`.${targetClassname}`).classList.remove('active');
           const productId = Number(event.target.parentNode.parentNode.dataset.id);
-          const deleteItemIndex = favouriteList.findIndex(id => id === productId);
-          favouriteList.splice(deleteItemIndex, 1);
-          saveToLocalStorage('ski-people-favourite', favouriteList);
+
+          if (productId != null) {
+            const deleteItemIndex = favouriteList.findIndex(id => id === productId);
+            favouriteList.splice(deleteItemIndex, 1);
+            saveToLocalStorage('ski-people-favourite', favouriteList);
+          }
         } else {
           event.target.closest(`.${targetClassname}`).classList.add('active');
           const productId = Number(event.target.parentNode.parentNode.dataset.id);
-          favouriteList.push(productId);
-          saveToLocalStorage('ski-people-favourite', favouriteList);
+          
+          if (productId != null) {
+            favouriteList.push(productId);
+            saveToLocalStorage('ski-people-favourite', favouriteList);
+          }
         }
 
       }
@@ -62,4 +68,37 @@ const addToFavourite = (targetWrapperClassname, targetClassname) => {
 
 }
 
-export { changeCategory, addToFavourite }
+const search = async (searchFormClassname, searchInputClassname, changedWrapperClassname) => {
+
+  const formSearchContainer = document.querySelector(`.${searchFormClassname}`); 
+  const searchInput = formSearchContainer.querySelector(`.${searchInputClassname}`);
+  const changedWrapperContainer = document.querySelector(`.${changedWrapperClassname}`);
+
+  let searchResults;
+
+  if (formSearchContainer) {
+    formSearchContainer.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      
+      // console.log('search submit');
+      router.navigate(`/search?query=${searchInput.value}`);
+      // console.log('redirecting');
+      
+      const products = await getProducts();
+      searchResults = products.filter(p => p.title === searchInput.value);
+      console.log('searchResults: ', searchResults);
+      
+      if (searchResults.length !== 0) {
+        changedWrapperContainer.textContent = '';
+        // console.log('changedWrapperContainer: ', changedWrapperContainer);
+        changedWrapperContainer.append(createProductsHtmlComponent(searchResults));
+      } else {
+        changedWrapperContainer.textContent = 'Мы ничего не нашли:(';
+      }
+
+    })
+  }
+
+}
+
+export { changeCategory, addToFavourite, search }
